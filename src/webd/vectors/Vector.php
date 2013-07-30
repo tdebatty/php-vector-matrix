@@ -1,6 +1,6 @@
 <?php
 
-namespace Webd\Vectors;
+namespace webd\vectors;
 
 class Vector
 {
