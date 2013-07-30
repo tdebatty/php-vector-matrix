@@ -1,3 +1,4 @@
 {
-    "name": "webd/vectors"
+    "name": "webd/vectors",
+    "description": "A library for vectors and matrices algebra"
 }
