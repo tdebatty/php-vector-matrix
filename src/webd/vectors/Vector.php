@@ -33,6 +33,13 @@ class Vector
     
     // ----------------- Standard operations
     
+    /**
+     * Sum of 2 Vectors OR
+     * Sum of a Vector + a numeric
+     * 
+     * @param Vector or numeric $other
+     * @return \webd\vectors\Vector (or child of...)
+     */
     public function add($other) {
         $class = get_called_class();
         $array = array();
@@ -102,9 +109,11 @@ class Vector
     public function div($other) {
         $class = get_called_class();
         $array = array();
+        
         for ($i=0; $i<count($this->value); $i++) {
             $array[$i] = $this->value[$i] / $other;
         }
+        
         return new $class($array);
     }
     
@@ -142,15 +151,27 @@ class Vector
         $mean = $this->mean();
         $accumulator = 0;
         for ($i=0; $i < count($this->value); $i++) {
-            $accumulator += ($this->value[$i] - $mean)^2 / count($this->value);
+            $accumulator += ($this->value[$i] - $mean)^2;
         }
-        return $accumulator;
+        return $accumulator / count($this->value);
     }
     
     public function standardDeviation() {
         return sqrt($this->variance());
     }
     
+    /**
+     * Returns normalized vector (vector with same direction but length = 1)
+     * @return Vector 
+     */
+    public function normalize() {
+        return $this / $this->length();
+    }
+    
+    /**
+     * 
+     * @return float Eucledian size of the vector
+     */
     public function length() {
         $accumulator = 0;
         for ($i=0; $i<count($this->value); $i++) {
