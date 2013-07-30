@@ -19,31 +19,54 @@ class Vector
         $this->value = func_get_args();
     }
     
+    /**
+     * 
+     * @return [float] Array of value
+     */
     public function getValue() {
         return $this->value;
     }
     
-    public function display() {
-        echo implode(" ", $this->value) . "\n";
+    public function display($delimiter = "\t") {
+        echo implode($delimiter, $this->value) . "\n";
     }
     
-    public function mean() {
-        $count = count($this->value); 
-        $sum = array_sum($this->value); 
-        return $sum / $count; 
-    }
+    // ----------------- Standard operations
     
-    public function variance() {
-        $mean = $this->mean();
-        $accumulator = 0;
-        for ($i=0; $i < count($this->value); $i++) {
-            $accumulator += ($this->value[$i] - $mean)^2 / count($this->value);
+    public function add($other) {
+        $class = get_called_class();
+        $array = array();
+        
+        if (is_numeric($other)) {
+            for ($i=0; $i<count($this->value); $i++) {
+                $array[$i] = $this->value[$i] + $other;
+            }
+            
+        } else {
+            for ($i=0; $i<count($this->value); $i++) {
+                $array[$i] = $this->value[$i] + $other->value[$i];
+            }
         }
-        return $accumulator;
+        
+        return new $class($array);
     }
     
-    public function standardDeviation() {
-        return sqrt($this->variance());
+    public function sub($other) {
+        $class = get_called_class();
+        $array = array();
+        
+        if (is_numeric($other)) {
+            for ($i=0; $i<count($this->value); $i++) {
+                $array[$i] = $this->value[$i] - $other;
+            }
+            
+        } else {
+            for ($i=0; $i<count($this->value); $i++) {
+                $array[$i] = $this->value[$i] - $other->value[$i];
+            }
+        }
+        
+        return new $class($array);
     }
     
     public function dotProduct(Vector $other) {
@@ -76,40 +99,56 @@ class Vector
         return $result;
     }
     
-    public function add(Vector $other) {
-        $class = get_called_class();
-        $array = array();
-        for ($i=0; $i<count($this->value); $i++) {
-            $array[$i] = $this->value[$i] + $other->value[$i];
-        }
-        return new $class($array);
-    }
-    
-    public function __add(Vector $other) {
-        return $this->add($other);
-    }
-    
-    public function __sub($other) {
-        $array = array();
-        if (is_numeric($other)) {
-            for ($i=0; $i<count($this->value); $i++) {
-                $array[$i] = $this->value[$i] - $other;
-            }
-        } else {
-            for ($i=0; $i<count($this->value); $i++) {
-                $array[$i] = $this->value[$i] - $other->value[$i];
-            }
-        }
-        return new Vector($array);
-    }
-    
-    public function __div($other) {
+    public function div($other) {
         $class = get_called_class();
         $array = array();
         for ($i=0; $i<count($this->value); $i++) {
             $array[$i] = $this->value[$i] / $other;
         }
         return new $class($array);
+    }
+    
+    
+    
+    // ----------------- If PECL extension OPERATOR is installed...
+    public function __add($other) {
+        return $this->add($other);
+    }
+    
+    public function __sub($other) {
+        return $this->sub($other);
+    }
+    
+    public function __concat(Vector $other) {
+        return $this->dotProduct($other);
+    }
+    
+    public function __mul($other) {
+        return $this->crossProduct($other);
+    }
+    
+    public function __div($other) {
+        return $this->div($other);
+    }
+    
+    // ----------------- Some statistical operations
+    public function mean() {
+        $count = count($this->value); 
+        $sum = array_sum($this->value); 
+        return $sum / $count; 
+    }
+    
+    public function variance() {
+        $mean = $this->mean();
+        $accumulator = 0;
+        for ($i=0; $i < count($this->value); $i++) {
+            $accumulator += ($this->value[$i] - $mean)^2 / count($this->value);
+        }
+        return $accumulator;
+    }
+    
+    public function standardDeviation() {
+        return sqrt($this->variance());
     }
     
     public function length() {
