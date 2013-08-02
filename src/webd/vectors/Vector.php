@@ -81,7 +81,7 @@ class Vector
         for ($i=0; $i<count($this->value); $i++) {
             $accumulator += ($this->value[$i] * $other->value[$i]);
         }
-        return sqrt($accumulator);
+        return $accumulator;
     }
     
     public function crossProduct (Vector $other) {
@@ -144,20 +144,77 @@ class Vector
     public function mean() {
         $count = count($this->value); 
         $sum = array_sum($this->value); 
-        return $sum / $count; 
+        return ((float) $sum) / $count; 
     }
     
     public function variance() {
+        $count = count($this->value);
         $mean = $this->mean();
-        $accumulator = 0;
-        for ($i=0; $i < count($this->value); $i++) {
-            $accumulator += ($this->value[$i] - $mean)^2;
+        $accumulator = 0.0;
+        for ($i=0; $i < $count; $i++) {
+            $accumulator += (($this->value[$i] - $mean) * ($this->value[$i] - $mean)) / $count;
         }
-        return $accumulator / count($this->value);
+        return $accumulator;
     }
     
     public function standardDeviation() {
         return sqrt($this->variance());
+    }
+    
+    /**
+     * 
+     * @return Vector with mean = 0 and stdandard deviation = 1
+     */
+    public function standardNormal() {
+        return ($this - $this->mean()) / $this->standardDeviation();
+    }
+    
+    
+    public function sort() {
+        $class = get_called_class();
+        $value = $this->value; // Makes a copy of $this->value
+        sort($value);
+        return new $class($value);
+    }
+    
+    /**
+     * Tests if the values of the vector follow a normal law, using Anderson - Darling test
+     * http://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm
+     * http://en.wikipedia.org/wiki/Anderson%E2%80%93Darling_test
+     * With significance level (alpha) = 1%
+     * Procedure is valid for sample size at least 8 values
+     * 
+     * @return boolean true is values follow a normal law
+     */
+    public function adtest() {
+        $critical = 1.092; // Corresponds to alpha = 0.01
+        $nd = new \webd\stats\NormalDistribution();
+        
+        $sorted = $this->sort();
+
+        $n = $this->dim();
+        $A2 = -$n;
+        for ($i = 1; $i <= $n; $i++) {
+            $A2 += -(2 * $i - 1) / $n * ( log($nd->cumulativeProbability($sorted->value[$i - 1])) + log(1 - $nd->cumulativeProbability($sorted->value[$n - $i])) );
+            
+            //echo $nd->cumulativeProbability($sorted->value[$i - 1]) . "\n";
+            //echo $nd->cumulativeProbability($sorted->value[$n - $i]) . "\n";
+        }
+
+        $A2_star = $A2 * (1 + 4 / $n - 25 / ($n * $n));
+        //echo $A2_star . "\n";
+        
+        if ($A2_star > $critical) {
+            
+            return FALSE;
+        } else {
+            // Data seems to follow a normal law
+            return TRUE;
+        }
+    }
+    
+    public function isGaussian() {
+        return $this->adtest();
     }
     
     /**
