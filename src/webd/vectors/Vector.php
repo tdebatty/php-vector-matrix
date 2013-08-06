@@ -141,12 +141,20 @@ class Vector
     }
     
     // ----------------- Some statistical operations
+    /**
+     * Compute the sample mean (estimated mean) of the values
+     * @return float
+     */
     public function mean() {
         $count = count($this->value); 
         $sum = array_sum($this->value); 
         return ((float) $sum) / $count; 
     }
     
+    /**
+     * Compute the sample variance (estimated variance) of the values
+     * @return float
+     */
     public function variance() {
         $count = count($this->value);
         $mean = $this->mean();
@@ -157,6 +165,10 @@ class Vector
         return $accumulator;
     }
     
+    /**
+     * Compute the sample standard deviation (estimated standard deviation) of the values
+     * @return float
+     */
     public function standardDeviation() {
         return sqrt($this->variance());
     }
@@ -175,6 +187,26 @@ class Vector
         $value = $this->value; // Makes a copy of $this->value
         sort($value);
         return new $class($value);
+    }
+    
+    /**
+     * Empirical Cumulative Distribution Function
+     * ecdf($value) = (number of values <= $value) / number of values
+     * @param float $value
+     * @return float
+     */
+    public function ecdf($value) {
+
+        $n = $this->dim();
+
+        $count = 0;
+        for ($i=0; $i<$n; $i++) {
+            if ($this->value[$i] <= $value) {
+                $count++;
+            }
+        }
+
+        return $count / $n;
     }
     
     /**
