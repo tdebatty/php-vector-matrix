@@ -180,7 +180,7 @@ class Vector
      * @return Vector with mean = 0 and stdandard deviation = 1
      */
     public function standardNormal() {
-        return ($this - $this->mean()) / $this->standardDeviation();
+        return $this->sub($this->mean())->div($this->standardDeviation());
     }
     
     
@@ -192,22 +192,20 @@ class Vector
     }
     
     /**
-     * Empirical Cumulative Distribution Function
+     * Compute the Empirical Cumulative Distribution Function for $value
+     * Also called the Kaplan-Meier estimate
      * ecdf($value) = (number of values <= $value) / number of values
      * @param float $value
      * @return float
      */
     public function ecdf($value) {
-
         $n = $this->length();
-
         $count = 0;
         for ($i=0; $i<$n; $i++) {
             if ($this->value[$i] <= $value) {
                 $count++;
             }
         }
-
         return $count / $n;
     }
     
@@ -223,23 +221,14 @@ class Vector
     public function adtest() {
         $critical = 1.092; // Corresponds to alpha = 0.01
         $nd = new \webd\stats\NormalDistribution();
-        
         $sorted = $this->sort();
-
         $n = $this->length();
         $A2 = -$n;
         for ($i = 1; $i <= $n; $i++) {
             $A2 += -(2 * $i - 1) / $n * ( log($nd->cumulativeProbability($sorted->value[$i - 1])) + log(1 - $nd->cumulativeProbability($sorted->value[$n - $i])) );
-            
-            //echo $nd->cumulativeProbability($sorted->value[$i - 1]) . "\n";
-            //echo $nd->cumulativeProbability($sorted->value[$n - $i]) . "\n";
         }
-
         $A2_star = $A2 * (1 + 4 / $n - 25 / ($n * $n));
-        //echo $A2_star . "\n";
-        
         if ($A2_star > $critical) {
-            
             return FALSE;
         } else {
             // Data seems to follow a normal law
@@ -276,15 +265,12 @@ class Vector
     }
     
     /**
-     * Project a set of points on this vector, and return a 1D vector
-     * @param Array $array
+     * Compute the scalar projection of vector $a on this vector
+     * aka scalar resolute or scalar component of a in the direction of this vector
+     * http://en.wikipedia.org/wiki/Scalar_projection
+     * @param Vector $a
      */
-    public function scalarProject(Vector $other) {
-        $result = $this->dotProduct($other) / $this->norm();
-        if (is_numeric($result)) {
-            return $result;
-        } else {
-            return 0;
-        }
+    public function scalarProject(Vector $a) {
+        return $this->dotProduct($a) / $this->norm();
     }
 }
