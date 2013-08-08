@@ -85,11 +85,11 @@ class Vector
     }
     
     public function crossProduct (Vector $other) {
-        if ($this->dim() != 3) {
+        if ($this->length() != 3) {
             throw new Exception("Must be 3 dimension");
         }
         
-        if ($other->dim() != 3) {
+        if ($other->length() != 3) {
             throw new Exception("Must be 3 dimension");
         }
         
@@ -152,17 +152,19 @@ class Vector
     }
     
     /**
-     * Compute the sample variance (estimated variance) of the values
+     * Computes the UNBIASED sample variance (estimated variance) of the values
+     * TODO: implement a more efficient algorithm:
+     * http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
      * @return float
-     */
-    public function variance() {
-        $count = count($this->value);
-        $mean = $this->mean();
+     */ 
+   public function variance() {
+        $n = count($this->value);
         $accumulator = 0.0;
-        for ($i=0; $i < $count; $i++) {
-            $accumulator += (($this->value[$i] - $mean) * ($this->value[$i] - $mean)) / $count;
+        for ($i=0; $i < $n; $i++) {
+            $accumulator += $this->value[$i]* $this->value[$i];
         }
-        return $accumulator;
+        
+        return $accumulator / ($n-1) - ($n/($n-1)) * $this->mean() * $this->mean();
     }
     
     /**
@@ -197,7 +199,7 @@ class Vector
      */
     public function ecdf($value) {
 
-        $n = $this->dim();
+        $n = $this->length();
 
         $count = 0;
         for ($i=0; $i<$n; $i++) {
@@ -224,7 +226,7 @@ class Vector
         
         $sorted = $this->sort();
 
-        $n = $this->dim();
+        $n = $this->length();
         $A2 = -$n;
         for ($i = 1; $i <= $n; $i++) {
             $A2 += -(2 * $i - 1) / $n * ( log($nd->cumulativeProbability($sorted->value[$i - 1])) + log(1 - $nd->cumulativeProbability($sorted->value[$n - $i])) );
@@ -254,14 +256,14 @@ class Vector
      * @return Vector 
      */
     public function normalize() {
-        return $this / $this->length();
+        return $this->div($this->norm());
     }
     
     /**
      * 
-     * @return float Eucledian size of the vector
+     * @return float Eucledian norm of the vector
      */
-    public function length() {
+    public function norm() {
         $accumulator = 0;
         for ($i=0; $i<count($this->value); $i++) {
             $accumulator += ($this->value[$i] * $this->value[$i]);
@@ -269,7 +271,7 @@ class Vector
         return sqrt($accumulator);
     }
     
-    public function dim() {
+    public function length() {
         return count($this->value);
     }
     
@@ -278,7 +280,7 @@ class Vector
      * @param Array $array
      */
     public function scalarProject(Vector $other) {
-        $result = $this->dotProduct($other) / $this->length();
+        $result = $this->dotProduct($other) / $this->norm();
         if (is_numeric($result)) {
             return $result;
         } else {

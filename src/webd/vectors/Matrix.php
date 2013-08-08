@@ -54,7 +54,7 @@ class Matrix
         
         for ($i = 0; $i<$iterations; $i++) {
             $b = $this . $b; // Dot product Matrix . Vector
-            $length = $b->length();
+            $length = $b->norm();
             $b = $b / $length;
         }
         

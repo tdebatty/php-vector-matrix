@@ -57,8 +57,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
         $r = $this->object->add($v);
         $this->assertInstanceOf('\webd\vectors\Vector', $r);
         
-        $r = $this->object->add(1.1);
-        $this->assertEquals(array(2.1,3.1,4.1), $r->getValue());
+        $this->assertEquals(array(2.1,3.1,4.1), $this->object->add(1.1)->getValue());
 
     }
 
@@ -78,10 +77,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testDotProduct().
      */
     public function testDotProduct() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(14, $this->object->dotProduct($this->object));
     }
 
     /**
@@ -89,10 +85,9 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testCrossProduct().
      */
     public function testCrossProduct() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $other = new Vector(4,5,6);
+        $r = $this->object->crossProduct($other);
+        $this->assertEquals(array(-3,6,-3), $r->getValue());
     }
 
     /**
@@ -166,10 +161,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testMean().
      */
     public function testMean() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(2, $this->object->mean());
     }
 
     /**
@@ -177,10 +169,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testVariance().
      */
     public function testVariance() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(1, $this->object->variance());
     }
 
     /**
@@ -188,10 +177,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testStandardDeviation().
      */
     public function testStandardDeviation() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(1, $this->object->standardDeviation());
     }
 
     /**
@@ -254,10 +240,15 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testNormalize().
      */
     public function testNormalize() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(1, $this->object->normalize()->norm());
+    }
+
+    /**
+     * @covers webd\vectors\Vector::norm
+     * @todo   Implement testNorm().
+     */
+    public function testNorm() {
+        $this->assertEquals(3.7417, $this->object->norm(), '', 0.0001);
     }
 
     /**
@@ -265,21 +256,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testLength().
      */
     public function testLength() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
-    }
-
-    /**
-     * @covers webd\vectors\Vector::dim
-     * @todo   Implement testDim().
-     */
-    public function testDim() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(3, $this->object->length());
     }
 
     /**
