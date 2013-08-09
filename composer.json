@@ -1,4 +1,10 @@
 {
-    "name": "webd/vectors",
-    "description": "A library for vectors and matrices algebra"
+    "name":         "webd/vectors",
+    "description":  "A library for vectors and matrices algebra",
+    "require":      {
+        "webd/stats":   "dev-master"
+    },
+    "autoload": {
+        "psr-0": {"": "src/"}
+    }
 }

@@ -205,11 +205,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers webd\vectors\Vector::adtest
      */
-    public function testAdtest() {
-        require_once "/home/tibo/NetBeansProjects/php-stats/src/webd/stats/Erf.php";
-        require_once "/home/tibo/NetBeansProjects/php-stats/src/webd/stats/NormalDistribution.php";
-        require_once "/home/tibo/NetBeansProjects/php-stats/src/webd/stats/Random.php";
-        
+    public function testAdtest() {        
         $normal = new Vector(0.1917,    1.2441,   -1.1642,    1.6353,    0.6863,   -1.1495,    1.1102,    1.1826,    1.7073,   -0.4203,    1.6394,    0.2635,   -1.4635,   -0.7762,    0.9295,    1.7930,   -1.1832,   -0.1112,   -0.6568,    1.8797,   -0.8961,    1.3315,   -0.6246,    0.7767,   -1.3243,    1.5003,   -2.2029,    0.3225,    0.4210,   -0.8207,   -0.9665,    0.6093,   -1.0362,   -0.0282,   -2.8198,   -2.0810,   -0.0448,    1.1180,   -1.6495,    0.6787,    0.4943,   -0.5885,   -0.0239,    2.1913,   -1.4006,    0.4801,    0.2076,    0.3221,   -0.0059,    0.2814,   -0.2513,   -1.6935,   -0.5840,    0.2344,    0.2588,    0.6037,    2.2210,   -1.6541,    0.6804,    0.1358,   -0.0380,   -0.6931,   -0.1275,    0.6804,    0.4262,   -1.6057,    0.9062,    0.2495,    1.8942,   -1.1124,   -0.7220,   -1.7522,    0.0036,    0.9951,   -0.4790,   -0.5191,   -0.2947,   -0.1605,    1.0235,    0.0159,   -0.4827,    0.6347,   -1.3644,    0.5986);
         $this->assertEquals(true, $normal->adtest());
     }
@@ -217,11 +213,7 @@ class VectorTest extends \PHPUnit_Framework_TestCase {
         /**
      * @covers webd\vectors\Vector::adtest
      */
-    public function testAdtest2() {
-        require_once "/home/tibo/NetBeansProjects/php-stats/src/webd/stats/Erf.php";
-        require_once "/home/tibo/NetBeansProjects/php-stats/src/webd/stats/NormalDistribution.php";
-        require_once "/home/tibo/NetBeansProjects/php-stats/src/webd/stats/Random.php";
-        
+    public function testAdtest2() {        
         $exp = new Vector(0.7918,    4.5890,    0.5124,    0.5082,    0.4317,    1.0708,    0.7066,    0.3541,    0.1190,    2.8994,    2.3191,    0.4311,    0.2691,    0.0121,    2.0768,    1.0093,    0.3912,    0.9788,    0.1468,    1.2311);
         $this->assertEquals(false, $exp->adtest());
         
