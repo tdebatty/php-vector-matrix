@@ -19,7 +19,8 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
     protected function setUp() {
         $this->object = new Matrix(array(
             array(1, 2, 3),
-            array(4, 5, 6)
+            array(4, 5, 6),
+            array(1, 6, 5)
         ));
     }
 
@@ -36,10 +37,11 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testEigenvalue().
      */
     public function testEigenvalue() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(
+                12.1133,
+                $this->object->eigenvalue(),
+                "",
+                0.0001);
     }
 
     /**
@@ -47,10 +49,11 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testEigenvector().
      */
     public function testEigenvector() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $this->assertEquals(
+                array(0.3, 0.708, 0.6393),
+                $this->object->eigenvector()->getValue(),
+                "",
+                0.0001);
     }
 
     /**
@@ -69,10 +72,10 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
      * @todo   Implement testDotProduct().
      */
     public function testDotProduct() {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-                'This test has not been implemented yet.'
-        );
+        $v = new Vector (1,2,3);
+        $this->assertEquals(
+                array(14,32,28),
+                $this->object->dotProduct($v)->getValue());
     }
 
     /**

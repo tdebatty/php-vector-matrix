@@ -53,9 +53,9 @@ class Matrix
         var_dump($b);
         
         for ($i = 0; $i<$iterations; $i++) {
-            $b = $this . $b; // Dot product Matrix . Vector
+            $b = $this->dotProduct($b); // Dot product Matrix . Vector
             $length = $b->norm();
-            $b = $b / $length;
+            $b = $b->div($length);
         }
         
         $this->_eigenvalue = $length;
