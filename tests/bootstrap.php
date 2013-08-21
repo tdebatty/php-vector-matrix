@@ -17,6 +17,6 @@ spl_autoload_register(function($class) {
         require $file;
     }
 });
-echo "Done;..";
+
 require_once dirname(__FILE__).'/../vendor/autoload.php';
 ?>

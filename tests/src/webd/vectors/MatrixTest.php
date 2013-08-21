@@ -1,4 +1,5 @@
 <?php
+
 namespace webd\vectors;
 
 /**
@@ -17,8 +18,8 @@ class MatrixTest extends \PHPUnit_Framework_TestCase {
      */
     protected function setUp() {
         $this->object = new Matrix(array(
-            array(1,2,3),
-            array(4,5,6)
+            array(1, 2, 3),
+            array(4, 5, 6)
         ));
     }
 

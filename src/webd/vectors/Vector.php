@@ -251,6 +251,7 @@ class Vector
     /**
      * 
      * @return float Eucledian norm of the vector
+     * @todo Implement p-norm: http://en.wikipedia.org/wiki/Norm_(mathematics)
      */
     public function norm() {
         $accumulator = 0;
